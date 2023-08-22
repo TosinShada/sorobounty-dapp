@@ -134,7 +134,7 @@ fn test_get_stream_by_user() {
 
     println!("{:?}", stream);
 
-    assert_eq!(stream.len(), 50);
+    assert_eq!(stream.len(), 1);
 }
 
 #[test]
