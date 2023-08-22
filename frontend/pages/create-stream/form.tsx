@@ -65,8 +65,9 @@ type AccountFormValues = z.infer<typeof accountFormSchema>
 
 // This can come from your database or API.
 const defaultValues: Partial<AccountFormValues> = {
-  // name: "Your name",
-  // dob: new Date("2023-01-23"),
+  tokenAddress: "",
+  flowRate: "",
+  recipient: "",
 }
 
 const defaultDate = {
@@ -112,9 +113,7 @@ export function CreateStreamForm() {
       stop_time: BigInt(to.unix()),
     }
 
-    console.log('createStreamRequest', createStreamRequest)
-
-    await createStream(createStreamRequest, { fee: 1000, secondsToWait: 20 })
+    await createStream(createStreamRequest, { fee: 1000, secondsToWait: 20, responseType: "full" })
       .then((result: any) => {
         console.log('result', result)
         toast({
@@ -127,13 +126,12 @@ export function CreateStreamForm() {
         toast({
           variant: 'destructive',
           title: 'Uh oh! Something went wrong.',
-          description: 'An error occured while calling the smart contract.',
+          description: `${error}`,
         })
-        console.log('error', error)
       })
       .finally(() => {
         setIsLoading(false)
-        form.reset()
+        form.reset(defaultValues)
         setDate(defaultDate)
       })
   }
