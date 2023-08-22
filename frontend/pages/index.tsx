@@ -1,7 +1,7 @@
 import { Metadata, NextPage } from "next";
 
-import { columns } from "./components/columns";
-import { DataTable } from "./components/data-table";
+import { columns } from "@/components/list/columns";
+import { DataTable } from "@/components/list/data-table";
 import { useGetStream } from "@/hooks";
 
 export const metadata: Metadata = {
