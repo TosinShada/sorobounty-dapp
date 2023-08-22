@@ -1,0 +1,17 @@
+{
+  "name": "tide",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "packages/*"
+  ],
+  "scripts": {
+    "frontend:dev": "yarn --cwd frontend dev",
+    "frontend:build": "yarn --cwd frontend build",
+    "frontend:start": "yarn --cwd frontend start"
+  }
+}
