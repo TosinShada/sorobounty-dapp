@@ -1,10 +1,6 @@
-# Yarn Monorepo example
+# Tide Payment Streaming DAPP
 
-This project is an example of the monorepo handled by yarn workspaces. 
-
-To know more - please refer to: [Yarn Monorepo example](https://medium.com/@mkocik/yarn-workspaces-monorepo-beginners-guide-ed89de47aa25)
-
-If you need the complete monorepo boilerplate - it's [here](https://github.com/mkocik/monorepo-rest-api-node-react-boilerplate)
+This project is a simple DAPP that allows users to stream payments to each other. It is built using [Soroban](https://soroban.stellar.org/), [Next.js](https://nextjs.org/) and [TypeScript](https://www.typescriptlang.org/).
 
 ## Installation
 
@@ -15,12 +11,7 @@ yarn
 ```
 
 ## Usage
-To run the project, you need to build it and start it.
-
-```bash
-yarn build
-yarn start
-```
+To run the project, you need to run the backend and frontend workspaces.
 
 ## Base structure
 The project contains backend and frontend workspaces, together with packages, that can be used to extract some logic there.
@@ -28,7 +19,6 @@ The project contains backend and frontend workspaces, together with packages, th
 backend/
 frontend/
 packages/
-     config/
      .../
      .../
 ```
