@@ -1100,6 +1100,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "soroban-name-service"
+version = "0.0.0"
+dependencies = [
+ "rand",
+ "soroban-sdk",
+]
+
+[[package]]
 name = "soroban-native-sdk-macros"
 version = "0.0.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
