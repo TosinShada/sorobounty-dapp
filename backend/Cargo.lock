@@ -1007,6 +1007,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "sns-resolver"
+version = "0.0.0"
+dependencies = [
+ "sns-registry-interface",
+ "soroban-sdk",
+]
+
+[[package]]
 name = "soroban-env-common"
 version = "0.0.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
