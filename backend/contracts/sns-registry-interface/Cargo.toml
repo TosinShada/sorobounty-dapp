@@ -1,0 +1,10 @@
+[package]
+name = "sns-registry-interface"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+soroban-sdk = { workspace = true }
+
+[features]
+testutils = ["soroban-sdk/testutils"]

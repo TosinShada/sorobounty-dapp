@@ -1,7 +1,9 @@
 [package]
-name = "sns-registry"
-version = "0.1.0"
+name = "sns-registrar"
+version = "0.0.0"
 edition = "2021"
+publish = false
+autobins = false
 
 [lib]
 crate-type = ["cdylib"]

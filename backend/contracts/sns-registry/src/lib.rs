@@ -1,21 +1,15 @@
+// #![deny(warnings)]
 #![no_std]
 use core::panic;
 
 use soroban_sdk::{contract, contractimpl, contracttype, log, Address, Bytes, BytesN, Env};
+use sns_registry_interface::{SnsRegistryTrait, Record};
 
 mod events;
 mod test;
 mod testutils;
 
 pub(crate) const BUMP_AMOUNT: u32 = 518400; // 30 days
-
-#[derive(Clone, Debug)]
-#[contracttype]
-pub struct Record {
-    pub owner: Address,
-    pub resolver: Address,
-    pub ttl: u32,
-}
 
 #[derive(Clone)]
 #[contracttype]
@@ -24,7 +18,7 @@ pub enum DataKey {
     Records(BytesN<32>),
     // [Operator Address, Owner Address] => bool
     Operators(Address, Address),
-    // Address => Admin
+    // () => Admin Address
     Admin,
 }
 
@@ -43,7 +37,9 @@ fn has_administrator(e: &Env) -> bool {
 }
 
 fn has_record(e: &Env, node: &BytesN<32>) -> bool {
-    e.storage().persistent().has(&DataKey::Records(node.clone()))
+    e.storage()
+        .persistent()
+        .has(&DataKey::Records(node.clone()))
 }
 
 fn get_record_by_node(e: &Env, node: &BytesN<32>) -> Record {
@@ -177,19 +173,19 @@ fn append_hash(env: &Env, parent_hash: &BytesN<32>, leaf_hash: &BytesN<32>) -> B
 }
 
 #[contract]
-struct SnsRegistry;
+pub struct SnsRegistry;
 
 #[contractimpl]
 #[allow(clippy::needless_pass_by_value)]
-impl SnsRegistry {
-    pub fn initialize(e: Env, admin: Address) {
+impl SnsRegistryTrait for SnsRegistry {
+    fn initialize(e: Env, admin: Address) {
         if has_administrator(&e) {
             panic!("already initialized")
         }
         set_administrator(&e, &admin);
     }
 
-    pub fn set_record(
+    fn set_record(
         e: Env,
         caller: Address,
         node: BytesN<32>,
@@ -200,36 +196,19 @@ impl SnsRegistry {
         caller.require_auth();
         require_node_authorised(&e, &node, &caller);
         set_parent_node_owner(&e, &node, &owner);
-        log!(&e, "entered here");
         set_resolver_ttl(&e, &node, &resolver, &ttl);
-    }
-
-    pub fn set_subnode_record(
-        e: Env,
-        caller: Address,
-        node: BytesN<32>,
-        owner: Address,
-        label: BytesN<32>,
-        resolver: Address,
-        ttl: u32,
-    ) {
-        caller.require_auth();
-        require_node_authorised(&e, &node, &caller);
-        set_subnode_owner(&e, &node, &label, &owner);
-        let subnode = append_hash(&e, &node, &label);
-        set_resolver_ttl(&e, &subnode, &resolver, &ttl);
     }
 
     // Sets the owner of a tld (top level domain eg. .sns)
     // It checks if the caller is the owner of the node for already existing tld's or the admin for new tld's
 
-    pub fn set_owner(e: Env, caller: Address, node: BytesN<32>, owner: Address) {
+    fn set_owner(e: Env, caller: Address, node: BytesN<32>, owner: Address) {
         caller.require_auth();
         require_node_authorised(&e, &node, &caller);
         set_parent_node_owner(&e, &node, &owner);
     }
 
-    pub fn set_subnode_owner(
+    fn set_subnode_owner(
         e: Env,
         caller: Address,
         node: BytesN<32>,
@@ -241,47 +220,46 @@ impl SnsRegistry {
         set_subnode_owner(&e, &node, &label, &owner);
     }
 
-    pub fn set_resolver(e: Env, caller: Address, node: BytesN<32>, resolver: Address) {
+    fn set_resolver(e: Env, caller: Address, node: BytesN<32>, resolver: Address) {
         caller.require_auth();
         require_node_authorised(&e, &node, &caller);
         set_resolver(&e, &node, &resolver);
     }
 
-    pub fn set_ttl(e: Env, caller: Address, node: BytesN<32>, ttl: u32) {
+    fn set_ttl(e: Env, caller: Address, node: BytesN<32>, ttl: u32) {
         caller.require_auth();
         require_node_authorised(&e, &node, &caller);
         set_ttl(&e, &node, &ttl);
     }
 
-    pub fn set_approval_for_all(e: Env, caller: Address, operator: Address, approved: bool) {
+    fn set_approval_for_all(e: Env, caller: Address, operator: Address, approved: bool) {
         caller.require_auth();
         set_approval_for_all(&e, &operator, &caller, &approved);
-        log!(&e, "entered here");
     }
 
-    pub fn owner(e: Env, node: BytesN<32>) -> Address {
+    fn owner(e: Env, node: BytesN<32>) -> Address {
         get_owner(&e, &node)
     }
 
-    pub fn resolver(e: Env, node: BytesN<32>) -> Address {
+    fn resolver(e: Env, node: BytesN<32>) -> Address {
         get_resolver(&e, &node)
     }
 
-    pub fn ttl(e: Env, node: BytesN<32>) -> u32 {
+    fn ttl(e: Env, node: BytesN<32>) -> u32 {
         get_ttl(&e, &node)
     }
 
-    pub fn record(e: Env, node: BytesN<32>) -> Record {
+    fn record(e: Env, node: BytesN<32>) -> Record {
         get_record_by_node(&e, &node)
     }
 
-    pub fn record_exist(e: Env, node: BytesN<32>) -> bool {
+    fn record_exist(e: Env, node: BytesN<32>) -> bool {
         let record = get_record_by_node(&e, &node);
         let admin = get_administrator(&e);
         record.owner != admin
     }
 
-    pub fn is_approved_for_all(e: Env, operator: Address, owner: Address) -> bool {
+    fn is_approved_for_all(e: Env, operator: Address, owner: Address) -> bool {
         is_operator_approved(&e, &operator, &owner)
     }
 }

@@ -89,39 +89,6 @@ fn test_set_record() {
 }
 
 #[test]
-fn test_set_subnode_record() {
-    let setup = Setup::new();
-    advance_ledger(&setup.env, 6);
-
-    let node = create_node(&setup.env, "sns");
-    let label = create_node(&setup.env, "tosin");
-    let subnode = append_node(&setup.env, &node, &label);
-
-    setup.sns.client().mock_all_auths().set_record(
-        &setup.admin_user,
-        &node,
-        &setup.node_owner,
-        &setup.resolver,
-        &10,
-    );
-
-    setup.sns.client().mock_all_auths().set_subnode_record(
-        &setup.node_owner,
-        &node,
-        &setup.subnode_owner,
-        &label,
-        &setup.resolver,
-        &10,
-    );
-
-    let sns_record = setup.sns.client().record(&subnode);
-
-    assert_eq!(sns_record.owner, setup.subnode_owner);
-    assert_eq!(sns_record.resolver, setup.resolver);
-    assert_eq!(sns_record.ttl, 10);
-}
-
-#[test]
 fn test_set_subnode_owner() {
     let setup = Setup::new();
     advance_ledger(&setup.env, 6);
@@ -245,15 +212,18 @@ fn test_set_approval_for_all() {
     let operator = Address::random(&setup.env);
     let approved = true;
 
-    setup
-        .sns
-        .client()
-        .mock_all_auths()
-        .set_approval_for_all(&setup.node_owner, &operator, &approved);
+    setup.sns.client().mock_all_auths().set_approval_for_all(
+        &setup.node_owner,
+        &operator,
+        &approved,
+    );
 
     assert_eq!(
         approved,
-        setup.sns.client().is_approved_for_all(&operator, &setup.node_owner)
+        setup
+            .sns
+            .client()
+            .is_approved_for_all(&operator, &setup.node_owner)
     );
 }
 
@@ -274,4 +244,3 @@ fn test_record_exist() {
 
     assert_eq!(true, setup.sns.client().record_exist(&node));
 }
-
