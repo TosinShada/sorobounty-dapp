@@ -71,7 +71,9 @@ fn require_administrator(e: &Env, caller: &Address) {
 State Changing Functions
 */
 fn set_name(e: &Env, node: &BytesN<32>, name: &Address) {
-    e.storage().persistent().set(&DataKey::Names(node.clone()), name);
+    e.storage()
+        .persistent()
+        .set(&DataKey::Names(node.clone()), name);
     e.storage()
         .persistent()
         .bump(&DataKey::Names(node.clone()), BUMP_AMOUNT);
@@ -80,7 +82,9 @@ fn set_name(e: &Env, node: &BytesN<32>, name: &Address) {
 fn set_text(e: &Env, node: &BytesN<32>, text: &String) {
     let mut texts = get_text(&e, &node);
     texts.push_back(text.clone());
-    e.storage().persistent().set(&DataKey::Texts(node.clone()), &texts);
+    e.storage()
+        .persistent()
+        .set(&DataKey::Texts(node.clone()), &texts);
     e.storage()
         .persistent()
         .bump(&DataKey::Texts(node.clone()), BUMP_AMOUNT);
@@ -101,8 +105,12 @@ fn set_administrator(e: &Env, caller: &Address) {
 }
 
 fn remove_record(e: &Env, node: &BytesN<32>) {
-    e.storage().persistent().remove(&DataKey::Names(node.clone()));
-    e.storage().persistent().remove(&DataKey::Texts(node.clone()));
+    e.storage()
+        .persistent()
+        .remove(&DataKey::Names(node.clone()));
+    e.storage()
+        .persistent()
+        .remove(&DataKey::Texts(node.clone()));
 }
 
 #[contract]

@@ -3,10 +3,7 @@
 extern crate std;
 
 use super::testutils::{register_test_contract as register_sns, SnsResolver};
-use soroban_sdk::{
-    testutils::Address as AddressTestTrait,
-    Address, Bytes, BytesN, Env, String,
-};
+use soroban_sdk::{testutils::Address as AddressTestTrait, Address, Bytes, BytesN, Env, String};
 
 fn create_node(e: &Env, name: &str) -> BytesN<32> {
     let node = Bytes::from_slice(&e, name.as_bytes());

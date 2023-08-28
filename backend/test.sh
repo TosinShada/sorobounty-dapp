@@ -2,39 +2,46 @@
 
 set -e
 
-MOCK_TOKEN_ADMIN_ADDRESS="$(soroban config identity address token-admin)"
-NETWORK="$(cat ./.stream-payment-dapp/network)"
-TOKEN_ADDRESS="$(cat ./.stream-payment-dapp/mock_token_id)"
-STREAMDAPP_ADDRESS="$(cat ./.stream-payment-dapp/streamdapp_id)"
+ADMIN_ADDRESS="$(soroban config identity address token-admin)"
+NETWORK="$(cat ./.sns-dapp/network)"
+SNS_REGISTRAR_ID="$(cat ./.sns-dapp/sns_registrar_id)"
+SNS_REGISTRY_ID="$(cat ./.sns-dapp/sns_registry_id)"
+SNS_RESOLVER_ID="$(cat ./.sns-dapp/sns_resolver_id)"
 
 echo Add the network to cli client
 soroban config network add \
   --rpc-url "https://rpc-futurenet.stellar.org:443" \
   --network-passphrase "Test SDF Future Network ; October 2022" "futurenet"
 
-echo "Create stream"
-start_time="$(($(date +"%s") + 100))"
-stop_time="$(($(date +"%s") + 500))"
-soroban contract invoke \
-  --network $NETWORK \
-  --source token-admin \
-  --id "$STREAMDAPP_ADDRESS" \
-  -- \
-  create_stream \
-  --sender "$MOCK_TOKEN_ADMIN_ADDRESS" \
-  --recipient "GADBBUM6UKJZNUKFII2L5YXZM4LIWINRTF7HTQI2YHMDH23MQGIKRLTQ" \
-  --amount 34560000 \
-  --token_address "$TOKEN_ADDRESS" \
-  --start_time 1692658800 \
-  --stop_time 1692831600
+ARGS="--network $NETWORK --source token-admin"
 
-echo "Get stream by user"
+echo "Register a new SNS"
 soroban contract invoke \
-  --network $NETWORK \
-  --source token-admin \
-  --id "$STREAMDAPP_ADDRESS" \
+  $ARGS \
+  --id "$SNS_REGISTRAR_ID" \
   -- \
-  get_streams_by_user \
-  --caller "$MOCK_TOKEN_ADMIN_ADDRESS"
+  register \
+  --caller "$ADMIN_ADDRESS" \
+  --owner "GADBBUM6UKJZNUKFII2L5YXZM4LIWINRTF7HTQI2YHMDH23MQGIKRLTQ" \
+  --name 9fbf261b62c1d7c00db73afb81dd97fdf20b3442e36e338cb9359b856a03bdc8 \
+  --duration 31536000 
+
+echo "Set Name in Resolver"
+soroban contract invoke \
+  $ARGS \
+  --id "$SNS_RESOLVER_ID" \
+  -- \
+  set_name \
+  --caller "$ADMIN_ADDRESS" \
+  --node 9fbf261b62c1d7c00db73afb81dd97fdf20b3442e36e338cb9359b856a03bdc8 \
+  --name GADBBUM6UKJZNUKFII2L5YXZM4LIWINRTF7HTQI2YHMDH23MQGIKRLTQ
+
+echo "Check name availability"
+soroban contract invoke \
+  $ARGS \
+  --id "$SNS_REGISTRAR_ID" \
+  -- \
+  available \
+  --name 9fbf261b62c1d7c00db73afb81dd97fdf20b3442e36e338cb9359b856a03bdc8 
 
 echo "Done"

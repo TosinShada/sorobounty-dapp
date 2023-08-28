@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "setup": "./initialize.sh ${NETWORK:-futurenet} && yarn build:dep && yarn install",
-    "clean": "rm -rf ../packages/mock-client ../packages/streamdapp-client",
-    "reset": "yarn clean && yarn setup",
-    "build:dep": "cargo build --target wasm32-unknown-unknown --release && ./target/bin/soroban contract bindings typescript --wasm ./target/wasm32-unknown-unknown/release/soroban_stream_contract.wasm --id $(cat ./.stream-payment-dapp/streamdapp_id) --output-dir ../packages/streamdapp-client --network $(cat ./.stream-payment-dapp/network) --contract-name @tide/stream-contract && ./target/bin/soroban contract bindings typescript --wasm ./target/wasm32-unknown-unknown/release/mock_token.wasm --id $(cat ./.stream-payment-dapp/mock_token_id) --output-dir ../packages/mock-client --network $(cat ./.stream-payment-dapp/network) --contract-name @tide/mock-token"
+    "stream:setup": "./initialize.sh ${NETWORK:-futurenet} && yarn stream:dependencies && yarn install",
+    "stream:clean": "rm -rf ../packages/mock-client ../packages/streamdapp-client",
+    "stream:reset": "yarn stream:clean && yarn stream:setup",
+    "stream:dependencies": "cargo build --target wasm32-unknown-unknown --release && ./target/bin/soroban contract bindings typescript --wasm ./target/wasm32-unknown-unknown/release/soroban_stream_contract.wasm --id $(cat ./.stream-payment-dapp/streamdapp_id) --output-dir ../packages/streamdapp-client --network $(cat ./.stream-payment-dapp/network) --contract-name @tide/stream-contract && ./target/bin/soroban contract bindings typescript --wasm ./target/wasm32-unknown-unknown/release/mock_token.wasm --id $(cat ./.stream-payment-dapp/mock_token_id) --output-dir ../packages/mock-client --network $(cat ./.stream-payment-dapp/network) --contract-name @tide/mock-token",
+    "sns:setup": "./initialize_sns.sh ${NETWORK:-futurenet} && yarn sns:dependencies && yarn install",
+    "sns:clean": "rm -rf ../packages/sns-registry-client ../packages/sns-registrar-client ../packages/sns-resolver-client",
+    "sns:reset": "yarn sns:clean && yarn sns:setup",
+    "sns:dependencies": "cargo build --target wasm32-unknown-unknown --release && ./target/bin/soroban contract bindings typescript --output-dir ../packages/sns-registry-client --id $(cat ./.sns-dapp/sns_registry_id) --wasm ./target/wasm32-unknown-unknown/release/sns_registry.wasm --network $(cat ./.sns-dapp/network) --contract-name @tide/sns-registry && ./target/bin/soroban contract bindings typescript --wasm ./target/wasm32-unknown-unknown/release/sns_registrar.wasm --id $(cat ./.sns-dapp/sns_registrar_id) --output-dir ../packages/sns-registrar-client --network $(cat ./.sns-dapp/network) --contract-name @tide/sns-registrar && ./target/bin/soroban contract bindings typescript --wasm ./target/wasm32-unknown-unknown/release/sns_resolver.wasm --id $(cat ./.sns-dapp/sns_resolver_id) --output-dir ../packages/sns-resolver-client --network $(cat ./.sns-dapp/network) --contract-name @tide/sns-resolver"
   },
   "devDependencies": {
     "@types/node": "20.5.0",

@@ -129,7 +129,7 @@ fn test_remove_controller() {
 #[test]
 fn test_transfer_contract_ownership() {
     let setup = Setup::new();
-    
+
     setup
         .registrar
         .client()
@@ -173,21 +173,26 @@ fn test_register() {
     let label = create_node(&setup.env, "test");
     let sub_node = append_node(&setup.env, &setup.base_node, &label);
 
-    setup
-        .registrar
-        .client()
-        .mock_all_auths()
-        .set_record(&setup.admin_user, &setup.registrar_address, &setup.resolver, &6220800);
+    setup.registrar.client().mock_all_auths().set_record(
+        &setup.admin_user,
+        &setup.registrar_address,
+        &setup.resolver,
+        &6220800,
+    );
 
-    setup
-        .registrar
-        .client()
-        .mock_all_auths()
-        .register(&setup.controller, &setup.domain_owner, &label, &6220800);
+    setup.registrar.client().mock_all_auths().register(
+        &setup.controller,
+        &setup.domain_owner,
+        &label,
+        &6220800,
+    );
 
     assert_eq!(setup.domain_owner, setup.registry.owner(&sub_node));
     assert_eq!(6220800, setup.registrar.client().name_expiry(&label));
-    assert_eq!(setup.domain_owner, setup.registrar.client().name_owner(&label));
+    assert_eq!(
+        setup.domain_owner,
+        setup.registrar.client().name_owner(&label)
+    );
 }
 
 #[test]
@@ -202,20 +207,25 @@ fn test_expiry() {
 
     let label = create_node(&setup.env, "test");
 
-    setup
-        .registrar
-        .client()
-        .mock_all_auths()
-        .set_record(&setup.admin_user, &setup.registrar_address, &setup.resolver, &6220800);
+    setup.registrar.client().mock_all_auths().set_record(
+        &setup.admin_user,
+        &setup.registrar_address,
+        &setup.resolver,
+        &6220800,
+    );
 
-    setup
-        .registrar
-        .client()
-        .mock_all_auths()
-        .register(&setup.controller, &setup.domain_owner, &label, &6220800);
+    setup.registrar.client().mock_all_auths().register(
+        &setup.controller,
+        &setup.domain_owner,
+        &label,
+        &6220800,
+    );
 
     assert_eq!(6220800, setup.registrar.client().name_expiry(&label));
-    assert_eq!(setup.domain_owner, setup.registrar.client().name_owner(&label));
+    assert_eq!(
+        setup.domain_owner,
+        setup.registrar.client().name_owner(&label)
+    );
 
     advance_ledger(&setup.env, 6220800);
 
@@ -238,20 +248,25 @@ fn test_renew() {
 
     let label = create_node(&setup.env, "test");
 
-    setup
-        .registrar
-        .client()
-        .mock_all_auths()
-        .set_record(&setup.admin_user, &setup.registrar_address, &setup.resolver, &6220800);
+    setup.registrar.client().mock_all_auths().set_record(
+        &setup.admin_user,
+        &setup.registrar_address,
+        &setup.resolver,
+        &6220800,
+    );
 
-    setup
-        .registrar
-        .client()
-        .mock_all_auths()
-        .register(&setup.controller, &setup.domain_owner, &label, &6220800);
+    setup.registrar.client().mock_all_auths().register(
+        &setup.controller,
+        &setup.domain_owner,
+        &label,
+        &6220800,
+    );
 
     assert_eq!(6220800, setup.registrar.client().name_expiry(&label));
-    assert_eq!(setup.domain_owner, setup.registrar.client().name_owner(&label));
+    assert_eq!(
+        setup.domain_owner,
+        setup.registrar.client().name_owner(&label)
+    );
 
     advance_ledger(&setup.env, 6220800);
 
@@ -265,5 +280,8 @@ fn test_renew() {
         .renew(&setup.controller, &label, &6220800);
 
     assert_eq!(12441600, setup.registrar.client().name_expiry(&label));
-    assert_eq!(setup.domain_owner, setup.registrar.client().name_owner(&label));
+    assert_eq!(
+        setup.domain_owner,
+        setup.registrar.client().name_owner(&label)
+    );
 }

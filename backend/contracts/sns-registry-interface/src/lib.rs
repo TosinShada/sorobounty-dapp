@@ -4,7 +4,6 @@
 use soroban_sdk::{contractclient, contractspecfn, contracttype, Address, BytesN, Env};
 pub struct Spec;
 
-
 #[derive(Clone, Debug)]
 #[contracttype]
 pub struct Record {

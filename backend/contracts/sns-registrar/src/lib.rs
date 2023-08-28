@@ -1,7 +1,7 @@
 #![no_std]
 use core::panic;
 
-use soroban_sdk::{contract, contractimpl, contracttype, Address, BytesN, Env, log};
+use soroban_sdk::{contract, contractimpl, contracttype, log, Address, BytesN, Env};
 
 mod registry_contract {
     soroban_sdk::contractimport!(
@@ -121,7 +121,10 @@ fn require_owner(e: &Env, node: &BytesN<32>, caller: &Address) {
 
 fn require_registry_ownership(e: &Env) {
     let registrar = get_registry_owner(e);
-    assert!(registrar == e.current_contract_address(), "Registrar is not authorised");
+    assert!(
+        registrar == e.current_contract_address(),
+        "Registrar is not authorised"
+    );
 }
 
 fn require_active_controller(e: &Env, caller: &Address) {
@@ -147,7 +150,9 @@ fn set_controller(e: &Env, caller: &Address, status: &bool) {
 }
 
 fn remove_controller(e: &Env, caller: &Address) {
-    e.storage().persistent().remove(&DataKey::Controllers(caller.clone()));
+    e.storage()
+        .persistent()
+        .remove(&DataKey::Controllers(caller.clone()));
 }
 
 fn set_domain_owner(e: &Env, node: &BytesN<32>, owner: &Address) {
@@ -176,9 +181,7 @@ fn set_registry(e: &Env, registry: &Address) {
 }
 
 fn set_base_node(e: &Env, base_node: &BytesN<32>) {
-    e.storage()
-        .persistent()
-        .set(&DataKey::BaseNode, base_node);
+    e.storage().persistent().set(&DataKey::BaseNode, base_node);
     e.storage()
         .persistent()
         .bump(&DataKey::BaseNode, BUMP_AMOUNT);
@@ -215,7 +218,7 @@ impl SnsRegistrar {
         caller.require_auth();
         require_registry_ownership(&e);
         require_administrator(&e, &caller);
-        remove_controller(&e, &controller,);
+        remove_controller(&e, &controller);
     }
 
     pub fn transfer_contract_ownership(e: Env, caller: Address, new_owner: Address) {
@@ -265,9 +268,16 @@ impl SnsRegistrar {
         get_controller_status(&e, &caller)
     }
 
-    pub fn register(e: Env, caller: Address, owner: Address, name: BytesN<32>, duration: u64) -> u64 {
+    pub fn register(
+        e: Env,
+        caller: Address,
+        owner: Address,
+        name: BytesN<32>,
+        duration: u64,
+    ) -> u64 {
         caller.require_auth();
-        require_active_controller(&e, &caller);
+        // Comment out to allow anyone to register a name
+        // require_active_controller(&e, &caller);
         require_registry_ownership(&e);
         assert!(is_name_available(&e, &name), "name is not available");
 
@@ -283,12 +293,7 @@ impl SnsRegistrar {
         let base_node = get_base_node(&e);
         let registry = get_registry(&e);
         let registry_client = registry_contract::Client::new(&e, &registry);
-        registry_client.set_subnode_owner(
-            &e.current_contract_address(),
-            &base_node,
-            &name,
-            &owner,
-        );
+        registry_client.set_subnode_owner(&e.current_contract_address(), &base_node, &name, &owner);
 
         expiry_date
     }

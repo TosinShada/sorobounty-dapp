@@ -2,8 +2,8 @@
 #![no_std]
 use core::panic;
 
+use sns_registry_interface::{Record, SnsRegistryTrait};
 use soroban_sdk::{contract, contractimpl, contracttype, log, Address, Bytes, BytesN, Env};
-use sns_registry_interface::{SnsRegistryTrait, Record};
 
 mod events;
 mod test;
