@@ -1,5 +1,5 @@
 {
-  "name": "@tide/name-service",
+  "name": "@tide/nameservice",
   "version": "0.1.0",
   "private": true,
   "scripts": {

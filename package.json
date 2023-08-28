@@ -7,7 +7,7 @@
   "workspaces": [
     "frontend",
     "backend",
-    "name-service",
+    "nameservice",
     "packages/*"
   ],
   "scripts": {
