@@ -24,11 +24,13 @@ export function useDomain() {
         return
       }
 
-      const expiry = await register({
+      await register({
         caller: account.address,
         owner: address,
         name: domain,
         duration: 31536000n,
+      }).catch((error) => {
+        console.error('register error', error)
       })
 
       await setName({
