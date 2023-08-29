@@ -1,7 +1,7 @@
 /**
  * The Soroban contract ID for the @tide/mock-token contract.
  */
-export declare const CONTRACT_ID = "CA763RD2JWHKSJLH2YOQYOMHIGYXYQ5WKYEJJWBNDGG2YK2256B5UIIN";
+export declare const CONTRACT_ID = "CB35KISMVEVOD6MAR4ZRDE26EOFLFXDFWMQHU26QNTFR4K256EGBG7DS";
 /**
  * The Soroban contract ID for the @tide/mock-token contract, in hex.
  * If {@link CONTRACT_ID} is a new-style `C…` string, you will need this hex

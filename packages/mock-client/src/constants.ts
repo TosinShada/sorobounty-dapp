@@ -3,7 +3,7 @@ import { Contract } from 'soroban-client'
 /**
  * The Soroban contract ID for the @tide/mock-token contract.
  */
-export const CONTRACT_ID = 'CA763RD2JWHKSJLH2YOQYOMHIGYXYQ5WKYEJJWBNDGG2YK2256B5UIIN'
+export const CONTRACT_ID = 'CB35KISMVEVOD6MAR4ZRDE26EOFLFXDFWMQHU26QNTFR4K256EGBG7DS'
 
 /**
  * The Soroban contract ID for the @tide/mock-token contract, in hex.
