@@ -101,6 +101,15 @@ export function CreateStreamForm() {
       return
     }
 
+    if (account?.address === data.recipient) {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: 'You cannot send to yourself.',
+      })
+      return
+    }
+
     // Get the flow rate with decimals
     const flowRate = BigInt(Number(data.flowRate) * 10 ** 7)
     const from = moment(date?.from)

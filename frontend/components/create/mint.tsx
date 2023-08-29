@@ -65,8 +65,8 @@ export function MintToken() {
     <>
       <CardHeader className="flex items-center justify-between space-y-2">
         <CardTitle>Mint Mock Token</CardTitle>
-        <CardDescription>
-          Click the below button to mint 1,000,000 Mock Tokens to your wallet.
+        <CardDescription className='text-center'>
+          Click the below button to mint 1,000,000 Mock Tokens to your wallet. This should cover you for approximately one week of streaming 1 token per second.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">

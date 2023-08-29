@@ -134,13 +134,15 @@ impl SnsResolver {
 
     pub fn set_name(e: Env, caller: Address, node: BytesN<32>, name: Address) {
         caller.require_auth();
-        require_administrator(&e, &caller);
+        // commented out to allow anyone to set name
+        // require_administrator(&e, &caller);
         set_name(&e, &node, &name);
     }
 
     pub fn set_text(e: Env, caller: Address, node: BytesN<32>, text: String) {
         caller.require_auth();
-        require_administrator(&e, &caller);
+        // commented out to allow anyone to set name
+        // require_administrator(&e, &caller);
         set_text(&e, &node, &text);
     }
 
