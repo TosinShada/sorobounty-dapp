@@ -188,10 +188,10 @@ export function CreateStreamForm() {
                   name="flowRate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Flow Rate/Second</FormLabel>
+                      <FormLabel>Flow Rate/Second (1.00)</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Flow Rate"
+                          placeholder="1.00"
                           type="number"
                           {...field}
                         />
