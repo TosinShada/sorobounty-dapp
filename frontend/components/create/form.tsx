@@ -53,9 +53,13 @@ const accountFormSchema = z.object({
   tokenAddress: z.string({
     required_error: 'A date of birth is required.',
   }),
-  flowRate: z.string({
-    required_error: 'Please select a token.',
-  }),
+  flowRate: z.coerce
+    .number({
+      required_error: 'Please enter a flow rate.',
+    })
+    .lte(2, {
+      message: 'Flow rate must be less than 2.',
+    }),
   recipient: z.string({
     required_error: 'Please enter a wallet address.',
   }),
@@ -65,9 +69,9 @@ type AccountFormValues = z.infer<typeof accountFormSchema>
 
 // This can come from your database or API.
 const defaultValues: Partial<AccountFormValues> = {
-  tokenAddress: "",
-  flowRate: "",
-  recipient: "",
+  tokenAddress: '',
+  flowRate: 0,
+  recipient: '',
 }
 
 const defaultDate = {
@@ -101,7 +105,7 @@ export function CreateStreamForm() {
     const flowRate = BigInt(Number(data.flowRate) * 10 ** 7)
     const from = moment(date?.from)
     const to = moment(date?.to)
-    const timeRange = moment(to).diff(from, 'days')
+    const timeRange = moment(to).diff(from, 'seconds')
     const amount = flowRate * BigInt(timeRange)
 
     const createStreamRequest = {
@@ -113,7 +117,13 @@ export function CreateStreamForm() {
       stop_time: BigInt(to.unix()),
     }
 
-    await createStream(createStreamRequest, { fee: 1000, secondsToWait: 20, responseType: "full" })
+    console.log('createStreamRequest', createStreamRequest)
+
+    await createStream(createStreamRequest, {
+      fee: 1000,
+      secondsToWait: 20,
+      responseType: 'full',
+    })
       .then((result: any) => {
         console.log('result', result)
         toast({
@@ -169,9 +179,13 @@ export function CreateStreamForm() {
                   name="flowRate"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Flow Rate/Day</FormLabel>
+                      <FormLabel>Flow Rate/Second</FormLabel>
                       <FormControl>
-                        <Input placeholder="Flow Rate" {...field} />
+                        <Input
+                          placeholder="Flow Rate"
+                          type="number"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

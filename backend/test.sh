@@ -3,10 +3,9 @@
 set -e
 
 ADMIN_ADDRESS="$(soroban config identity address token-admin)"
-NETWORK="$(cat ./.sns-dapp/network)"
-SNS_REGISTRAR_ID="$(cat ./.sns-dapp/sns_registrar_id)"
-SNS_REGISTRY_ID="$(cat ./.sns-dapp/sns_registry_id)"
-SNS_RESOLVER_ID="$(cat ./.sns-dapp/sns_resolver_id)"
+NETWORK="$(cat ./.stream-payment-dapp/network)"
+STREAMDAPP_ID="$(cat ./.stream-payment-dapp/streamdapp_id)"
+TOKEN_ADDRESS="$(cat ./.stream-payment-dapp/mock_token_id)"
 
 echo Add the network to cli client
 soroban config network add \
@@ -15,33 +14,26 @@ soroban config network add \
 
 ARGS="--network $NETWORK --source token-admin"
 
-echo "Register a new SNS"
+echo "Minting 100000000000000000 tokens to token-admin"
 soroban contract invoke \
   $ARGS \
-  --id "$SNS_REGISTRAR_ID" \
+  --id "$TOKEN_ADDRESS" \
   -- \
-  register \
-  --caller "$ADMIN_ADDRESS" \
-  --owner "GADBBUM6UKJZNUKFII2L5YXZM4LIWINRTF7HTQI2YHMDH23MQGIKRLTQ" \
-  --name 9fbf261b62c1d7c00db73afb81dd97fdf20b3442e36e338cb9359b856a03bdc8 \
-  --duration 31536000 
+  mint \
+  --to "$ADMIN_ADDRESS" \
+  --amount 100000000000000000
 
-echo "Set Name in Resolver"
+echo "Create stream in the streamdapp contract"
 soroban contract invoke \
   $ARGS \
-  --id "$SNS_RESOLVER_ID" \
+  --id "$STREAMDAPP_ID" \
   -- \
-  set_name \
-  --caller "$ADMIN_ADDRESS" \
-  --node 9fbf261b62c1d7c00db73afb81dd97fdf20b3442e36e338cb9359b856a03bdc8 \
-  --name GADBBUM6UKJZNUKFII2L5YXZM4LIWINRTF7HTQI2YHMDH23MQGIKRLTQ
-
-echo "Check name availability"
-soroban contract invoke \
-  $ARGS \
-  --id "$SNS_REGISTRAR_ID" \
-  -- \
-  available \
-  --name 9fbf261b62c1d7c00db73afb81dd97fdf20b3442e36e338cb9359b856a03bdc8 
+  create_stream \
+  --sender "$ADMIN_ADDRESS" \
+  --recipient "GCTQHL2YGRI35FZUL4Y6UBAJYSGCMFTVQIZAK5XRK4EYYY6SHABNLN5F" \
+  --amount 345600000000 \
+  --token_address "$TOKEN_ADDRESS" \
+  --start_time 1693782000 \
+  --stop_time 1693954800
 
 echo "Done"

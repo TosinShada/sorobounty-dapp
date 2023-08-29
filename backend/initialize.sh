@@ -72,11 +72,11 @@ if !(soroban config identity ls | grep token-admin 2>&1 >/dev/null); then
   echo Create the token-admin identity
   soroban config identity generate token-admin
 fi
-MOCK_TOKEN_ADMIN_ADDRESS="$(soroban config identity address token-admin)"
+ADMIN_ADDRESS="$(soroban config identity address token-admin)"
 
 # This will fail if the account already exists, but it'll still be fine.
 echo Fund token-admin account from friendbot
-curl --silent -X POST "$FRIENDBOT_URL?addr=$MOCK_TOKEN_ADMIN_ADDRESS" >/dev/null
+curl --silent -X POST "$FRIENDBOT_URL?addr=$ADMIN_ADDRESS" >/dev/null
 
 ARGS="--network $NETWORK --source token-admin"
 
@@ -108,7 +108,7 @@ soroban contract invoke \
   --symbol MCKT \
   --decimal 7 \
   --name mock_token \
-  --admin "$MOCK_TOKEN_ADMIN_ADDRESS"
+  --admin "$ADMIN_ADDRESS"
 
 echo "Minting 1000000000 tokens to token-admin"
 soroban contract invoke \
@@ -116,8 +116,8 @@ soroban contract invoke \
   --id "$MOCK_TOKEN_ID" \
   -- \
   mint \
-  --to "$MOCK_TOKEN_ADMIN_ADDRESS" \
-  --amount 1000000000
+  --to "$ADMIN_ADDRESS" \
+  --amount 100000000000000000
 
 echo "Initialize the streamdapp contract"
 soroban contract invoke \

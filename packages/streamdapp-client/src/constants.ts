@@ -3,7 +3,7 @@ import { Contract } from 'soroban-client'
 /**
  * The Soroban contract ID for the @tide/stream-contract contract.
  */
-export const CONTRACT_ID = 'CDUNX2GACFLCO32XHHUHLNB7OD3BMFCTFSCX2OYPIXMLCH3DMHVWVJHW'
+export const CONTRACT_ID = 'CDGFMBP3LHTYBDWACL45OSDHAG7EYZWJWETCT3RS7KTKHVOC2IP3HCYO'
 
 /**
  * The Soroban contract ID for the @tide/stream-contract contract, in hex.

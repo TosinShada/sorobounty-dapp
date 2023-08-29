@@ -6,6 +6,7 @@ import { useSubscription } from '@/hooks'
 import * as streamdappContract from '@tide/stream-contract'
 import { useMemo } from 'react'
 import * as SorobanClient from 'soroban-client'
+import { MintToken } from '@/components/create/mint'
 let xdr = SorobanClient.xdr
 
 export const metadata: Metadata = {
@@ -34,6 +35,9 @@ const Dashboard: NextPage = () => {
         </div>
 
         <div className="grid gap-4 grid-cols-2">
+          <Card className='grid content-center'>
+            <MintToken />
+          </Card>
           <Card>
             <CreateStreamForm />
           </Card>
