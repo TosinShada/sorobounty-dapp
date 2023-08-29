@@ -45,7 +45,7 @@ import { createStream } from '@tide/stream-contract'
 const tokens = [
   {
     label: 'MCKT - Mock Token',
-    value: 'CDTMODB5OP62K6W2GTYVUNOJZ5UFBGYVQVMXNEFFAPWHTKHUHWSW7LQC',
+    value: 'CB35KISMVEVOD6MAR4ZRDE26EOFLFXDFWMQHU26QNTFR4K256EGBG7DS',
   },
 ] as const
 
