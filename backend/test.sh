@@ -23,4 +23,4 @@ soroban contract invoke \
   --to "$ADMIN_ADDRESS" \
   --amount 1000000000000
 
-echo "Done"
+echo "Done" 
