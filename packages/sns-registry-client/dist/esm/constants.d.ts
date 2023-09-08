@@ -1,7 +1,7 @@
 /**
  * The Soroban contract ID for the @tide/sns-registry contract.
  */
-export declare const CONTRACT_ID = "CDVNMNWUZ5B47552TBDD6EBGKGC6DY5WGJAJEHBLXKQKXMWQPI3EGH7O";
+export declare const CONTRACT_ID = "CALPPOB6KNPZTWFFXIGKT4TVDK2DWT5I6P6FVVAFWPZN2NUUOJ43GAJU";
 /**
  * The Soroban contract ID for the @tide/sns-registry contract, in hex.
  * If {@link CONTRACT_ID} is a new-style `C…` string, you will need this hex

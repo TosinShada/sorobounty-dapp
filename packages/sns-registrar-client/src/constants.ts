@@ -3,7 +3,7 @@ import { Contract } from 'soroban-client'
 /**
  * The Soroban contract ID for the @tide/sns-registrar contract.
  */
-export const CONTRACT_ID = 'CCCNURB6RY2ALNFWEMZDJQFQ64WC5HKID5KGWSVNTVJYASRAXFVNIA3R'
+export const CONTRACT_ID = 'CDMTFWWO5ZZFM424THHYTKGSTRYFPHGHOYYCZFSESY2CAF56MZHUSRUQ'
 
 /**
  * The Soroban contract ID for the @tide/sns-registrar contract, in hex.
