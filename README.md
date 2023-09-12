@@ -57,13 +57,27 @@ yarn sns:clean
 
 2. Select the Futurenet network in your Freighter browser extension
 
-### Frontend
-Follow the steps beloww to setup the frontend
+### Stream Payment Frontend
+Follow the steps beloww to setup and run the frontend for the Stream Payment DAPP
 ```bash
 cd frontend
 ```
 
-#### Run the frontend
+#### Run the Stream Payment frontend
+You need to have deployed the smart contracts first. See above for more details
+```bash
+yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Soroban Name Service Frontend
+Follow the steps beloww to setup and run the frontend for the Stream Payment DAPP
+```bash
+cd nameservice
+```
+
+#### Run the Soroban Name Service frontend
 You need to have deployed the smart contracts first. See above for more details
 ```bash
 yarn dev
