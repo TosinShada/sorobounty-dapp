@@ -1,4 +1,4 @@
-# Tide Payment Streaming DAPP
+# Sorobounty DAPP
 
 This project is a simple DAPP that allows users to stream payments to each other. It is built using [Soroban](https://soroban.stellar.org/), [Next.js](https://nextjs.org/) and [TypeScript](https://www.typescriptlang.org/).
 
